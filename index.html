@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trạm Giải Trí - Góc Chill Dành Cho Học Sinh THPT</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f4f7fe;
+            color: #333;
+            line-height: 1.6;
+            padding-bottom: 40px;
+        }
+
+        /* Header dùng chung */
+        header {
+            background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 6px;
+        }
+
+        header p {
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Nút quay lại Trang chủ */
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: white;
+            color: #6c5ce7;
+            border: 1px solid #6c5ce7;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            cursor: pointer;
+            margin-bottom: 20px;
+            transition: all 0.2s;
+        }
+
+        .btn-back:hover {
+            background: #6c5ce7;
+            color: white;
+        }
+
+        /* --- TRANG CHỦ (HOME PAGE) --- */
+        #home-page {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .home-title {
+            text-align: center;
+            margin: 25px 0 15px;
+            color: #2d3436;
+            font-size: 1.4rem;
+        }
+
+        .home-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .category-card {
+            background: white;
+            border-radius: 18px;
+            padding: 25px 15px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            border-color: #a29bfe;
+            box-shadow: 0 8px 20px rgba(108, 92, 231, 0.15);
+        }
+
+        .category-card .icon {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+        }
+
+        .category-card h3 {
+            color: #6c5ce7;
+            font-size: 1.2rem;
+            margin-bottom: 6px;
+        }
+
+        .category-card p {
+            color: #777;
+            font-size: 0.85rem;
+        }
+
+        /* --- TRANG CON (SUB PAGES) --- */
+        .page {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .page-header-box {
+            background: white;
+            padding: 20px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.04);
+            margin-bottom: 20px;
+        }
+
+        .page-header-box h2 {
+            color: #6c5ce7;
+            font-size: 1.5rem;
+        }
+
+        /* Khung hỏi cảm xúc trong trang con */
+        .mood-box {
+            background: white;
+            padding: 22px;
+            border-radius: 18px;
+            margin-bottom: 20px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: 2px solid #a29bfe;
+        }
+
+        .mood-box h3 {
+            color: #2d3436;
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+        }
+
+        .mood-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+        .mood-btn {
+            background: #f0edff;
+            border: 1px solid #6c5ce7;
+            color: #574b90;
+            padding: 9px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .mood-btn:hover, .mood-btn.active {
+            background: #6c5ce7;
+            color: white;
+        }
+
+        /* Khung hiển thị danh sách đề xuất theo tâm trạng */
+        .recommendation-section {
+            display: none;
+            margin-top: 20px;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .recommendation-title {
+            color: #6c5ce7;
+            font-size: 1.15rem;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .item-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .item-card {
+            background: white;
+            padding: 16px 20px;
+            border-radius: 14px;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.04);
+            border-left: 5px solid #6c5ce7;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .item-info h4 {
+            color: #2d3436;
+            font-size: 1.05rem;
+            margin-bottom: 4px;
+        }
+
+        .item-info p {
+            color: #666;
+            font-size: 0.85rem;
+        }
+
+        .item-tag {
+            background: #e0dbff;
+            color: #5130b5;
+            font-size: 0.75rem;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-weight: bold;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #888;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header dùng chung -->
+    <header>
+        <h1>🎈 TRẠM GIẢI TRÍ 🎈</h1>
+        <p>Góc nạp năng lượng & xả stress dành riêng cho tuổi học trò</p>
+    </header>
+
+    <div class="container">
+
+        <!-- ================= TRANG CHỦ ================= -->
+        <div id="home-page">
+            <h2 class="home-title">Chọn góc giải trí bạn muốn trải nghiệm ✨</h2>
+
+            <div class="home-grid">
+                <!-- Ô Âm Nhạc -->
+                <div class="category-card" onclick="navigateTo('music-page')">
+                    <div class="icon">🎧</div>
+                    <h3>Âm Nhạc</h3>
+                    <p>Playlist lofi, chill beats & nhạc sôi động</p>
+                </div>
+
+                <!-- Ô Phim Ảnh -->
+                <div class="category-card" onclick="navigateTo('movie-page')">
+                    <div class="icon">🎬</div>
+                    <h3>Phim Ảnh</h3>
+                    <p>Phim học đường, Ghibli & anime nhẹ nhàng</p>
+                </div>
+
+                <!-- Ô Mini Game -->
+                <div class="category-card" onclick="navigateTo('game-page')">
+                    <div class="icon">🎮</div>
+                    <h3>Mini Game</h3>
+                    <p>Game thư giãn 5-10 phút giữa giờ</p>
+                </div>
+
+                <!-- Ô Truyện & Sách -->
+                <div class="category-card" onclick="navigateTo('book-page')">
+                    <div class="icon">📚</div>
+                    <h3>Truyện & Sách</h3>
+                    <p>Manga, comic & sách kỹ năng tuổi teen</p>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- ================= TRANG CON 1: ÂM NHẠC ================= -->
+        <div id="music-page" class="page">
+            <button class="btn-back" onclick="navigateTo('home-page')">⬅️ Quay lại Trang Chủ</button>
+
+            <div class="page-header-box">
+                <h2>🎧 Trạm Âm Nhạc</h2>
+                <p style="color: #666; font-size: 0.9rem;">Âm nhạc chính là liều thuốc chữa lành tuyệt vời nhất!</p>
+            </div>
+
+            <div class="mood-box">
+                <h3>Bây giờ bạn đang cảm thấy thế nào? 💭</h3>
+                <p style="font-size: 0.85rem; color: #666;">Chọn cảm xúc để Trạm đưa ra các bài hát phù hợp nhé:</p>
+                <div class="mood-buttons">
+                    <button class="mood-btn" onclick="showMusicMood('stress')">🤯 Đang căng thẳng học bài</button>
+                    <button class="mood-btn" onclick="showMusicMood('tired')">😴 Mệt mỏi / Tuột mood</button>
+                    <button class="mood-btn" onclick="showMusicMood('happy')">✨ Vui vẻ / Yêu đời</button>
+                </div>
+            </div>
+
+            <!-- Kết quả gợi ý nhạc -->
+            <div id="music-results" class="recommendation-section">
+                <h4 class="recommendation-title" id="music-result-title">🎶 Gợi ý bài hát dành cho bạn</h4>
+                <div class="item-list" id="music-item-list"></div>
+            </div>
+        </div>
+
+
+        <!-- ================= TRANG CON 2: PHIM ẢNH ================= -->
+        <div id="movie-page" class="page">
+            <button class="btn-back" onclick="navigateTo('home-page')">⬅️ Quay lại Trang Chủ</button>
+
+            <div class="page-header-box">
+                <h2>🎬 Trạm Phim Ảnh</h2>
+                <p style="color: #666; font-size: 0.9rem;">Thư giãn với những bộ phim thanh xuân rực rỡ</p>
+            </div>
+
+            <div class="mood-box">
+                <h3>Bạn đang muốn xem phim theo tâm trạng nào? 🍿</h3>
+                <div class="mood-buttons">
+                    <button class="mood-btn" onclick="showMovieMood('chill')">🌿 Muốn bình yên / Nhẹ nhàng</button>
+                    <button class="mood-btn" onclick="showMovieMood('laugh')">🤣 Muốn cười sảng khoái</button>
+                    <button class="mood-btn" onclick="showMovieMood('nostalgia')">🏫 Thích phim học đường</button>
+                </div>
+            </div>
+
+            <div id="movie-results" class="recommendation-section">
+                <h4 class="recommendation-title" id="movie-result-title">🍿 Danh sách phim phù hợp</h4>
+                <div class="item-list" id="movie-item-list"></div>
+            </div>
+        </div>
+
+
+        <!-- ================= TRANG CON 3: GAME ================= -->
+        <div id="game-page" class="page">
+            <button class="btn-back" onclick="navigateTo('home-page')">⬅️ Quay lại Trang Chủ</button>
+
+            <div class="page-header-box">
+                <h2>🎮 Trạm Mini Game</h2>
+                <p style="color: #666; font-size: 0.9rem;">Giải trí nhanh giữa các ca học</p>
+            </div>
+
+            <div class="mood-box">
+                <h3>Bạn muốn chơi thể loại game nào? 🎯</h3>
+                <div class="mood-buttons">
+                    <button class="mood-btn" onclick="showGameMood('quick')">⚡ Chơi nhanh 5 phút xả stress</button>
+                    <button class="mood-btn" onclick="showGameMood('relax')">🌾 Trồng cây / Thư giãn nhẹ</button>
+                </div>
+            </div>
+
+            <div id="game-results" class="recommendation-section">
+                <h4 class="recommendation-title" id="game-result-title">🎮 Game gợi ý cho bạn</h4>
+                <div class="item-list" id="game-item-list"></div>
+            </div>
+        </div>
+
+
+        <!-- ================= TRANG CON 4: TRUYỆN & SÁCH ================= -->
+        <div id="book-page" class="page">
+            <button class="btn-back" onclick="navigateTo('home-page')">⬅️ Quay lại Trang Chủ</button>
+
+            <div class="page-header-box">
+                <h2>📚 Trạm Truyện & Sách</h2>
+                <p style="color: #666; font-size: 0.9rem;">Đắm chìm vào những trang sách hay</p>
+            </div>
+
+            <div class="mood-box">
+                <h3>Hôm nay bạn thích đọc gì? 📖</h3>
+                <div class="mood-buttons">
+                    <button class="mood-btn" onclick="showBookMood('manga')">🖍️ Manga / Truyện tranh vui vẻ</button>
+                    <button class="mood-btn" onclick="showBookMood('skill')">💡 Sách kỹ năng & Động lực</button>
+                </div>
+            </div>
+
+            <div id="book-results" class="recommendation-section">
+                <h4 class="recommendation-title" id="book-result-title">📚 Sách/Truyện gợi ý cho bạn</h4>
+                <div class="item-list" id="book-item-list"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>© 2026 Trạm Giải Trí dành cho Teen. Chúc bạn có những phút giây chill thật tuyệt!</p>
+    </footer>
+
+    <!-- JavaScript Xử Lý Chuyển Trang & Đề Xuất -->
+    <script>
+        // Hàm chuyển trang mượt mà
+        function navigateTo(pageId) {
+            // Ẩn trang chủ
+            document.getElementById('home-page').style.display = 'none';
+            
+            // Ẩn tất cả các trang con
+            let pages = document.querySelectorAll('.page');
+            pages.forEach(p => p.style.display = 'none');
+
+            // Hiện trang được chọn
+            document.getElementById(pageId).style.display = 'block';
+            window.scrollTo(0, 0); // Cuộn lên đầu trang
+        }
+
+        // --- ĐỀ XUẤT TRANG ÂM NHẠC ---
+        function showMusicMood(mood) {
+            let section = document.getElementById('music-results');
+            let list = document.getElementById('music-item-list');
+            section.style.display = 'block';
+
+            if (mood === 'stress') {
+                list.innerHTML = `
+                    <div class="item-card">
+                        <div class="item-info">
+                            <h4>🎵 Lofi Beats - Study & Focus</h4>
+                            <p>Nhạc không lời nhẹ nhàng giúp tập trung làm bài tập Toán, Văn.</p>
+                        </div>
+                        <span class="item-tag">Tập trung</span>
+                    </div>
+                    <div class="item-card">
+                        <div class="item-info">
+                            <h4>🎵 Piano Chill - Lofi Rain</h4>
+                            <p>Tiếng mưa rơi kết hợp tiếng Piano xua tan căng thẳng.</p>
+                        </div>
+                        <span class="item-tag">Thư giãn</span>
+                    </div>
+                `;
+            } else if (mood === 'tired') {
+                list.innerHTML = `
+                    <div class="item-card">
+                        <div class="item-info">
+                            <h4>🎵 Energy Boost - EDM Remix</h4>
+                            <p>Giai điệu sôi động giúp lấy lại sự tỉnh táo trước khi học ca tối.</p>
+                        </div>
+                        <span class="item-tag">Tỉnh táo</span>
+                    </div>
+                    <div class="item-card">
+                        <div class="item-info">
+                            <h4>🎵 Chill Pop Acoustic</h4>
+                            <p>Nhạc Pop nhẹ nhàng giúp hồi phục năng lượng tích cực.</p>
+                        </div>
+                        <span class="item-tag">Nạp năng lượng</span>
+                    </div>
+                `;
+            } else if (mood === 'happy') {
+                list.innerHTML = `
+                    <div class="item-card">
+                        <div class="item-info">
+                            <h4>🎵 Summer Vibes Acoustic</h4>
+                            <p>Những bản nhạc rực rỡ khiến bạn muốn nhún nhảy theo giai điệu.</p>
+                        </div>
+                        <span class="item-tag">Yêu đời</span>
+                    </div>
+                `;
+            }
+        }
+
+        // --- ĐỀ XUẤT TRANG PHIM ---
+        function showMovieMood(mood) {
+            let section = document.getElementById('movie-results');
+            let list = document.getElementById('movie-item-list');
+            section.style.display = 'block';
+
+            if (mood === 'chill') {
+                list.innerHTML = `
+                    <div class="item-card">
+                        <div class="item-info">
+                            <h4>🎬 Spirited Away (Vùng Đất Linh Hồn)</h4>
+                            <p>Hoạt hình Ghibli kinh điển với nét vẽ siêu bình yên.</p>
+                        </div>
+                        <span class="item-tag">Ghibli Anime</span>
+                    </div>
+                `;
+            } else if (mood === 'laugh') {
+                list.innerHTML = `
+                    <div class="item-card">
+                        <div class="item-info">
+                            <h4>🎬 Gia Đình Là Số 1 (Phần 2)</h4>
+                            <p>Những tập phim hài ngắn cười sảng khoái xả stress nhanh.</p>
+                        </div>
+                        <span class="item-tag">Hài hước</span>
+                    </div>
+                `;
+            } else if (mood === 'nostalgia') {
+                list.innerHTML = `
+                    <div class="item-card">
+                        <div class="item-info">
+                            <h4>🎬 Reply 1988 (Lời Hồi Đáp 1988)</h4>
+                            <p>Bộ phim ấm áp về tình bạn học trò và tình cảm gia đình.</p>
+                        </div>
+                        <span class="item-tag">Học đường</span>
+                    </div>
+                `;
+            }
+        }
+
+        // --- ĐỀ XUẤT TRANG GAME ---
+        function showGameMood(mood) {
+            let section = document.getElementById('game-results');
+            let list = document.getElementById('game-item-list');
+            section.style.display = 'block';
+
+            if (mood === 'quick') {
+                list.innerHTML = `
+                    <div class="item-card">
+                        <div class="item-info">
+                            <h4>🎮 2048 & Sudoku</h4>
+                            <p>Game tính toán nhẹ nhàng, giải trí 5 phút giữa giờ.</p>
+                        </div>
+                        <span class="item-tag">Trí não</span>
+                    </div>
+                `;
+            } else if (mood === 'relax') {
+                list.innerHTML = `
+                    <div class="item-card">
+                        <div class="item-info">
+                            <h4>🎮 Hay Day / Animal Crossing</h4>
+                            <p>Trồng cây, trang trí nông trại vô lo vô nghĩ.</p>
+                        </div>
+                        <span class="item-tag">Nông trại</span>
+                    </div>
+                `;
+            }
+        }
+
+        // --- ĐỀ XUẤT TRANG TRUYỆN ---
+        function showBookMood(mood) {
+            let section = document.getElementById('book-results');
+            let list = document.getElementById('book-item-list');
+            section.style.display = 'block';
+
+            if (mood === 'manga') {
+                list.innerHTML = `
+                    <div class="item-card">
+                        <div class="item-info">
+                            <h4>📖 Doraemon & Shin Cậu Bé Bút Chì</h4>
+                            <p>Mẫu chuyện ngắn hài hước quay về tuổi thơ.</p>
+                        </div>
+                        <span class="item-tag">Manga vui</span>
+                    </div>
+                `;
+            } else if (mood === 'skill') {
+                list.innerHTML = `
+                    <div class="item-card">
+                        <div class="item-info">
+                            <h4>📖 Sức Mạnh Của Thói Quản Nhỏ</h4>
+                            <p>Cách học tập và rèn luyện thói quen không bị áp lực.</p>
+                        </div>
+                        <span class="item-tag">Kỹ năng</span>
+                    </div>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>
